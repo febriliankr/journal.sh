@@ -2,27 +2,20 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"os"
 	"time"
 
-	"github.com/urfave/cli/v2"
+	"github.com/dustin/go-humanize"
 )
 
+// sudo cp jdate /usr/local/bin
 func main() {
-	app := &cli.App{
-		Name:  "Journal",
-		Usage: "A simple journal CLI, for date generation",
-		Action: func(*cli.Context) error {
-			today := time.Now()
-			todayString := today.Format("Jan 1st, 2006")
-			fmt.Println(todayString)
-			return nil
-		},
-	}
-	// generate todays date with this format "Jan 1st, 2006"
+	today := time.Now()
+	//  Convert time to string with format Jan 1st, 2006
+	year := today.Local().Year()
 
-	if err := app.Run(os.Args); err != nil {
-		log.Fatal(err)
-	}
+	month := today.Local().Month().String()
+	tdate := today.Day()
+	date := humanize.Ordinal(tdate)
+	out := fmt.Sprintf("- [[%s %s, %v]]", month, date, year)
+	fmt.Println(out)
 }
